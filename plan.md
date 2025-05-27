@@ -13,13 +13,13 @@ Got USC 26 data, rough langchain RAG setup, started parsing USC 26, came up with
 
 2. Parse USC 26 and German tax law (deal with silly structures like tables)
 
-3. Get basic Langchain RAG pipeline working for each (stock parameters and LLMs)
+3. Get basic Langchain RAG pipeline working for each (stock parameters, LLMs, simple preprocessing)
 
 4. Figure out how to evaluate the models (VDB retrieval, so precision and recall -- qualitative analysis of generation against baseline LLM)
 
 5. Debug any weirdness with the generation
 
-6. Look at changing variables (embedding model, base LLM, data?)
+6. Look at changing variables (embedding model, base LLM, data, preprocessing)
 
 6. Look at fine tuning the embedding model
 
