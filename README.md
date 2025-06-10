@@ -16,3 +16,25 @@ Finally, two future directions are as follows:
 
 - The tax code idea could be expanded upon by collecting more relevant data pertaining to individual states, counties, cities, and so forth, thus providing a tool for those interested in the tax law of their respective location.
 
+## 📚 Overview of Key German Tax Laws
+
+This project references core components of the German federal tax system. Below is a summary of the most relevant laws:
+
+### 📘 EStG – Einkommensteuergesetz (Income Tax Act)
+Regulates the taxation of income for individuals. It defines types of income, deductions, tax brackets, and how income tax is calculated for residents and those with income in Germany.
+
+### 📗 UStG – Umsatzsteuergesetz (VAT Act)
+Governs value-added tax (VAT) on goods and services. It sets the rules for when VAT is applicable, who must pay it, and the applicable rates (e.g., 19% standard, 7% reduced).
+
+### 📙 KStG – Körperschaftsteuergesetz (Corporate Tax Act)
+Covers corporate income tax for legal entities such as GmbHs and AGs. It defines taxable income, exemptions, and a flat corporate tax rate (currently 15%).
+
+### 📒 AO – Abgabenordnung (Fiscal Code)
+The general framework for tax procedures in Germany. It applies across all tax types and includes rules on filing, assessment, audits, penalties, deadlines, and appeals.
+
+### 📕 ErbStG – Erbschaftsteuer- und Schenkungsteuergesetz (Inheritance and Gift Tax Act)
+Regulates taxation of wealth transfers through inheritance or gifts. Tax rates and exemptions vary depending on the relationship between giver and recipient.
+
+---
+
+These laws are primarily federal and apply uniformly across Germany, with some exceptions (e.g., property tax models at the state level).

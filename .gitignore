@@ -1,0 +1,74 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# macOS metadata files
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+.pyenv/
+
+# pipenv
+Pipfile.lock
+
+# Poetry
+poetry.lock
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Pytest
+.cache
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# coverage
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# logs
+*.log
+
+# test output
+junit-*.xml
+
+# local dev tools
+.idea/
+.vscode/
+*.code-workspace
+
+# builds
+build/
+dist/
+*.egg-info/
+.eggs/
