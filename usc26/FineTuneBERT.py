@@ -3,8 +3,9 @@ import os
 import numpy as np
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader
-from transformers import BertModel, BertTokenizer, AdamW
+from torch.utils.data import DataLoader, Dataset
+from transformers import BertModel, BertTokenizer
+from torch.optim import AdamW
 from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import accuracy_score, f1_score
@@ -254,7 +255,7 @@ def main(args):
                     best_params = (lr, batch_size, epochs)
 
     # Save results with job ID
-    output_file = f"results_{args.job_id}.json"
+    output_file = f"/DL-data/results_{args.job_id}.json"
     with open(output_file, "w") as f:
         json.dump({
             "job_id": args.job_id,
@@ -276,7 +277,7 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="BERT Subtitle Classifier Training")
 
-    parser.add_argument("--data_path", type=str, default="./usc26.xml", help="Path to XML data file")
+    parser.add_argument("--data_path", type=str, default="/DL-data/usc26.xml", help="Path to XML data file")
     parser.add_argument("--lrs", type=float, nargs="+", default=[2e-5, 3e-5], help="Learning rates to try")
     parser.add_argument("--batch_sizes", type=int, nargs="+", default=[8, 16], help="Batch sizes to try")
     parser.add_argument("--epochs", type=int, nargs="+", default=[3, 5], help="Epochs to try")
@@ -288,5 +289,5 @@ if __name__ == "__main__":
 
 
 # For multi GPU finetuning:
-# python train_job.py --job_id gpu1 --lrs 2e-5 --batch_sizes 8 --epochs 3 5
-# python train_job.py --job_id gpu2 --lrs 3e-5 --batch_sizes 16 --epochs 3 5
+# python FineTuneBERT.py --job_id gpu1 --lrs 2e-5 --batch_sizes 8 --epochs 3 5
+# python FineTuneBERT.py --job_id gpu2 --lrs 3e-5 --batch_sizes 16 --epochs 3 5
