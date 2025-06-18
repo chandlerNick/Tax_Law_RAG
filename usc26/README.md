@@ -9,6 +9,6 @@ Specifically we look at:
 
 The initial parsing was done in initial_parse.ipynb, this was refined and then reused in other files utilizing the data. We essentially parse at the section level, taking all text at this level as content and adding the metadata tags.
 
-The fine tuning of BERT was done in the FineTuneBERT directory. All that must change is the pathing in the python script to change where the data is and where the results are stored if one wants to recreate our work. Our results are stored in the usc26/FineTuneBERT_USC26/FTBERT_HPO_Results. The fine tuned model is at 
+The fine tuning of BERT was done in the FineTuneBERT directory. All that must change is the pathing in the python script to change where the data is and where the results are stored if one wants to recreate our work. Our results are stored in the usc26/FineTuneBERT_USC26/FTBERT_HPO_Results. The fine tuned model is on HuggingFace as an embedding model: 
 
 

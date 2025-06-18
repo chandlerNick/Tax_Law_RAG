@@ -74,4 +74,4 @@ dist/
 .eggs/
 
 usc26/USC26_Subtitle_Classification_BERT
-
+usc26/sentence_transformers_usc26_bert
