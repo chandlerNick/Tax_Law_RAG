@@ -1,8 +1,13 @@
 #!/bin/bash
+set -euo pipefail
 
 # Shared log file on your mounted volume
-LOG_FILE="/DL-Data/output/grid_search.log"
+LOG_FILE="/DL-data/output/grid_search.log"
 mkdir -p "$(dirname "$LOG_FILE")"
+
+PYTHON_BIN=$(which python)
+echo "Using Python: $PYTHON_BIN" | tee -a "$LOG_FILE"
+
 
 # Grid values
 lrs=("2e-5" "3e-5")

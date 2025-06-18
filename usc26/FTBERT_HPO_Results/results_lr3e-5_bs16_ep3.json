@@ -1,0 +1,17 @@
+{
+  "job_id": "lr3e-5_bs16_ep3",
+  "results": [
+    {
+      "lr": 3e-05,
+      "batch_size": 16,
+      "epochs": 3,
+      "macro_f1": 0.6759375537520531
+    }
+  ],
+  "best": {
+    "lr": 3e-05,
+    "batch_size": 16,
+    "epochs": 3,
+    "macro_f1": 0.6759375537520531
+  }
+}
