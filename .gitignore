@@ -72,3 +72,6 @@ build/
 dist/
 *.egg-info/
 .eggs/
+
+usc26/USC26_Subtitle_Classification_BERT
+
