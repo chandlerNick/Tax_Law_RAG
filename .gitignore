@@ -73,5 +73,10 @@ dist/
 *.egg-info/
 .eggs/
 
-usc26/USC26_Subtitle_Classification_BERT
-usc26/sentence_transformers_usc26_bert
+usc26/EvalPublishFTBERT_USC26/USC26_Subtitle_Classification_BERT
+usc26/EvalPublishFTBERT_USC26/sentence_transformers_usc26_bert
+usc26/VectorDB_RAG/custom-bert-cls
+usc26/VectorDB_RAG/faiss_ft_store
+usc26/VectorDB_RAG/faiss_pt_store
+usc26/VectorDB_RAG/ft_annoy_tax_code_index
+usc26/VectorDB_RAG/pt_annoy_tax_code_index
