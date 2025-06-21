@@ -91,7 +91,7 @@ class SubtitleDataset(Dataset):
             'label': torch.tensor(self.labels[idx], dtype=torch.long)
         }
 
-class BertSubtitleClassifier(nn.Module):
+class BertSubtitleClassifier(nn.Module):  # No freezing so that we are placing less emphasis on the classifier's optimal hyperparameters
     def __init__(self, num_labels):
         super().__init__()
         self.bert = BertModel.from_pretrained("bert-base-uncased")
