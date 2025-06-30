@@ -44,19 +44,18 @@ def parse_sections_with_metadata(file_path):
         subsection = norm.findtext(".//titel[@format='XML']")
 
         # Content paragraph
-        content_text = ''
         for p in norm.findall(".//textdaten/text/Content/P"):
-            content_text += ''.join(p.itertext()).strip()
+            content_text = ''.join(p.itertext()).strip()
 
-        if content_text:
-            results.append({
-                "metadata": {
-                    "subtitle": current_part,
-                    "chapter": current_section,
-                    "section": subsection
-                },
-                "content": content_text,
-            })
+            if content_text:
+                results.append({
+                    "metadata": {
+                        "subtitle": current_part,
+                        "chapter": current_section,
+                        "section": subsection
+                    },
+                    "content": content_text,
+                })
 
     return results
 
@@ -177,6 +176,8 @@ def run_crossval_training(parsed_data, num_epochs, batch_size, lr_bert, lr_class
     if device is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+    print(f"\nDevice: {device}")
+
     texts = [entry["content"] for entry in parsed_data]
     subtitles = [entry["metadata"]["subtitle"] for entry in parsed_data]
 
@@ -259,29 +260,31 @@ def main(args):
                         best_params = (lr_bert, lr_class, batch_size, epochs)
 
     # Save results with job ID
-    output_file = f"/DL-data/results_{args.job_id}.json"
+    output_file = f"/storage/output/results_{args.job_id}.json"
     with open(output_file, "w") as f:
         json.dump({
             "job_id": args.job_id,
             "results": results,
             "best": {
-                "lr": best_params[0],
-                "batch_size": best_params[1],
-                "epochs": best_params[2],
+                "lr_bert": best_params[0],
+                "lr_class": best_params[1],
+                "batch_size": best_params[2],
+                "epochs": best_params[3],
                 "macro_f1": best_f1,
             }
         }, f, indent=2)
 
     print("\nBest Hyperparameters:")
-    print(f"  LR: {best_params[0]}")
-    print(f"  Batch Size: {best_params[1]}")
-    print(f"  Epochs: {best_params[2]}")
+    print(f"  LR bert: {best_params[0]}")
+    print(f"  LR classifier: {best_params[1]}")
+    print(f"  Batch Size: {best_params[2]}")
+    print(f"  Epochs: {best_params[3]}")
     print(f"Best Macro-F1: {best_f1:.4f}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="BERT Subtitle Classifier Training")
 
-    parser.add_argument("--data_path", type=str, default="/EStG.xml", help="Path to XML data file")
+    parser.add_argument("--data_path", type=str, default="/storage/Tax_Law_RAG/german-tax-law/EStG.xml", help="Path to XML data file")
     parser.add_argument("--lrs_bert", type=float, nargs="+", default=[1e-5, 2e-5], help="Learning rates to try for BERT")
     parser.add_argument("--lrs_class", type=float, nargs="+", default=[5e-5, 1e-3], help="Learning rates to try for the classification head")
     parser.add_argument("--batch_sizes", type=int, nargs="+", default=[8, 16], help="Batch sizes to try")

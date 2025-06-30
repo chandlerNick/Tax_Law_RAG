@@ -1,0 +1,19 @@
+{
+  "job_id": "lr_b1e-5_lr_c1e-3_bs16_ep4",
+  "results": [
+    {
+      "lr_bert": 1e-05,
+      "lr_class": 0.001,
+      "batch_size": 16,
+      "epochs": 4,
+      "macro_f1": 0.6294873379273842
+    }
+  ],
+  "best": {
+    "lr_bert": 1e-05,
+    "lr_class": 0.001,
+    "batch_size": 16,
+    "epochs": 4,
+    "macro_f1": 0.6294873379273842
+  }
+}

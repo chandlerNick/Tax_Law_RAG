@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Shared log file on your mounted volume
-LOG_FILE="/DL-data/output/grid_search.log"
+LOG_FILE="/storage/output/grid_search.log"
 mkdir -p "$(dirname "$LOG_FILE")"
 
 PYTHON_BIN=$(which python)
@@ -11,7 +11,7 @@ echo "Using Python: $PYTHON_BIN" | tee -a "$LOG_FILE"
 
 # Grid values
 lrs_class=("5e-5" "1e-3")
-lrs_bert=("1e-5" "2e-5")
+lrs_bert=("1e-5" "2e-5" "3e-5")
 batch_sizes=(8 16)
 epochs=(3 4)
 
@@ -20,7 +20,7 @@ for lr_class in "${lrs_class[@]}"; do
   for lr_bert in "${lrs_bert[@]}"; do
     for bs in "${batch_sizes[@]}"; do
       for ep in "${epochs[@]}"; do
-        job_id="lr${lr}_bs${bs}_ep${ep}"
+        job_id="lr_b${lr_bert}_lr_c${lr_class}_bs${bs}_ep${ep}"
 
         echo "[$(date)] Running job $job_id..." | tee -a "$LOG_FILE"
         python FineTuneBERT_german.py \
