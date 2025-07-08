@@ -12,7 +12,7 @@ from sklearn.metrics import accuracy_score, f1_score
 import xml.etree.ElementTree as ET
 from tqdm import tqdm
 import json
-from huggingface_hub import login
+import joblib
 
 
 def parse_sections_with_metadata(file_path):
@@ -183,6 +183,7 @@ def run_crossval_training(parsed_data, num_epochs, batch_size, lr_bert, lr_class
 
     skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=42)
     fold_f1s = []
+    best_f1 = 0
 
     for fold, (train_idx, val_idx) in enumerate(skf.split(texts, labels)):
         print(f"\nFold {fold+1}/{n_splits}")
@@ -211,20 +212,19 @@ def run_crossval_training(parsed_data, num_epochs, batch_size, lr_bert, lr_class
         )
         f1 = evaluate(model, val_loader, device)
         fold_f1s.append(f1)
+        if f1>best_f1:
+            best_model_state = model.state_dict()
 
     print("\nCross-Validation Macro-F1 Scores:", fold_f1s)
     print("Mean Macro-F1:", np.mean(fold_f1s))
     print("Std Dev:", np.std(fold_f1s))
 
-    # Save final model & tokenizer
-    save_path = f"bert-subtitle-model-german-{args.job_id}"
-    model.save_pretrained(save_path)
-    tokenizer.save_pretrained(save_path)
+    # Save best model & tokenizer
+    print("Saving best model ...")
 
-    # Push to Hugging Face Hub (you must be logged in)
-    print("Pushing model to Hugging Face Hub...")
-    model.push_to_hub(save_path)
-    tokenizer.push_to_hub(save_path)
+    torch.save(best_model_state, "/storage/Tax_Law_RAG/german-tax-law/output/bert-subtitle-model-german.pt")
+    tokenizer.save_pretrained("/storage/Tax_Law_RAG/german-tax-law/output/tokenizer/")
+    joblib.dump(label_encoder, "/storage/Tax_Law_RAG/german-tax-law/output/label_encoder.pkl")
 
     return np.mean(fold_f1s)
 
@@ -232,7 +232,6 @@ def run_crossval_training(parsed_data, num_epochs, batch_size, lr_bert, lr_class
 
 def main(args):
 
-    login(token="your_hf_token") # insert token here but don't push!
     if isinstance(args.data_path, list):
         parsed_data = {}
         for path in args.data_path:
