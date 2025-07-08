@@ -4,7 +4,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, Dataset
-from transformers import BertModel, BertTokenizer
+from transformers import BertModel, BertTokenizer, PreTrainedModel, PreTrainedTokenizerFast
 from torch.optim import AdamW
 from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import LabelEncoder
@@ -12,10 +12,8 @@ from sklearn.metrics import accuracy_score, f1_score
 import xml.etree.ElementTree as ET
 from tqdm import tqdm
 import json
+from huggingface_hub import login
 
-
-# -- Paste SubtitleDataset, BertSubtitleClassifier, get_ancestor_heading_text, parse_sections_with_metadata,
-#    train, evaluate, train_with_early_stopping here (all your defined functions) --
 
 def parse_sections_with_metadata(file_path):
     tree = ET.parse(file_path)
@@ -218,11 +216,23 @@ def run_crossval_training(parsed_data, num_epochs, batch_size, lr_bert, lr_class
     print("Mean Macro-F1:", np.mean(fold_f1s))
     print("Std Dev:", np.std(fold_f1s))
 
+    # Save final model & tokenizer
+    save_path = f"bert-subtitle-model-german-{args.job_id}"
+    model.save_pretrained(save_path)
+    tokenizer.save_pretrained(save_path)
+
+    # Push to Hugging Face Hub (you must be logged in)
+    print("Pushing model to Hugging Face Hub...")
+    model.push_to_hub(save_path)
+    tokenizer.push_to_hub(save_path)
+
     return np.mean(fold_f1s)
 
 
 
 def main(args):
+
+    login(token="your_hf_token") # insert token here but don't push!
     if isinstance(args.data_path, list):
         parsed_data = {}
         for path in args.data_path:
@@ -230,69 +240,28 @@ def main(args):
     else:
         parsed_data = parse_sections_with_metadata(args.data_path)
 
-    results = []
-    best_f1 = 0
-    best_params = None
+    lr_bert = args.lrs_bert
+    lr_class = args.lrs_class
+    batch_size = args.batch_sizes
+    epochs = args.epochs
+    print(f"\nTraining lr_bert={lr_bert}, lr_class={lr_class}, batch_size={batch_size}, epochs={epochs}")
+    f1 = run_crossval_training(
+        parsed_data, num_epochs=epochs, batch_size=batch_size, lr_bert=lr_bert, lr_class=lr_class, patience=args.patience
+    )
+    print(f"Resulting Macro-F1: {f1:.4f}")
 
-    for lr_bert in args.lrs_bert:
-        for lr_class in args.lrs_class:
-            for batch_size in args.batch_sizes:
-                for epochs in args.epochs:
-                    print(f"\nTrying lr_bert={lr_bert}, lr_class={lr_class}, batch_size={batch_size}, epochs={epochs}")
-                    f1 = run_crossval_training(
-                        parsed_data, num_epochs=epochs, batch_size=batch_size, lr_bert=lr_bert, lr_class=lr_class, patience=args.patience
-                    )
-                    print(f"Resulting Macro-F1: {f1:.4f}")
-
-                    results.append({
-                        "lr_bert": lr_bert,
-                        "lr_class": lr_class,
-                        "batch_size": batch_size,
-                        "epochs": epochs,
-                        "macro_f1": f1,
-                    })
-
-                    if f1 > best_f1:
-                        best_f1 = f1
-                        best_params = (lr_bert, lr_class, batch_size, epochs)
-
-    # Save results with job ID
-    output_file = f"/storage/output/results_{args.job_id}.json"
-    with open(output_file, "w") as f:
-        json.dump({
-            "job_id": args.job_id,
-            "results": results,
-            "best": {
-                "lr_bert": best_params[0],
-                "lr_class": best_params[1],
-                "batch_size": best_params[2],
-                "epochs": best_params[3],
-                "macro_f1": best_f1,
-            }
-        }, f, indent=2)
-
-    print("\nBest Hyperparameters:")
-    print(f"  LR bert: {best_params[0]}")
-    print(f"  LR classifier: {best_params[1]}")
-    print(f"  Batch Size: {best_params[2]}")
-    print(f"  Epochs: {best_params[3]}")
-    print(f"Best Macro-F1: {best_f1:.4f}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="BERT Subtitle Classifier Training")
 
     parser.add_argument("--data_path", type=str, default="/storage/Tax_Law_RAG/german-tax-law/EStG.xml", help="Path to XML data file")
-    parser.add_argument("--lrs_bert", type=float, nargs="+", default=[1e-5, 2e-5], help="Learning rates to try for BERT")
-    parser.add_argument("--lrs_class", type=float, nargs="+", default=[5e-5, 1e-3], help="Learning rates to try for the classification head")
-    parser.add_argument("--batch_sizes", type=int, nargs="+", default=[8, 16], help="Batch sizes to try")
-    parser.add_argument("--epochs", type=int, nargs="+", default=[3, 5], help="Epochs to try")
+    parser.add_argument("--lrs_bert", type=float, nargs="+", default=3e-05, help="Learning rates to try for BERT")
+    parser.add_argument("--lrs_class", type=float, nargs="+", default=0.001, help="Learning rates to try for the classification head")
+    parser.add_argument("--batch_sizes", type=int, nargs="+", default=16, help="Batch sizes to try")
+    parser.add_argument("--epochs", type=int, nargs="+", default=4, help="Epochs to try")
     parser.add_argument("--patience", type=int, default=2, help="Early stopping patience")
     parser.add_argument("--job_id", type=str, required=True, help="Unique identifier for this job")
 
     args = parser.parse_args()
     main(args)
 
-
-# For multi GPU finetuning:
-# python FineTuneBERT.py --job_id gpu1 --lrs 2e-5 --batch_sizes 8 --epochs 3 5
-# python FineTuneBERT.py --job_id gpu2 --lrs 3e-5 --batch_sizes 16 --epochs 3 5
