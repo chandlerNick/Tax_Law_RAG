@@ -72,3 +72,11 @@ build/
 dist/
 *.egg-info/
 .eggs/
+
+# models and vector_stores
+german-tax-law/vector_db/custom-bert-cls
+german-tax-law/vector_db/faiss_ft_store
+german-tax-law/vector_db/faiss_pt_store
+german-tax-law/vector_db/ft_annoy_tax_code_index
+german-tax-law/vector_db/pt_annoy_tax_code_index
+german-tax-law/output
