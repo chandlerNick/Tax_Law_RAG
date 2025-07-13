@@ -16,12 +16,19 @@ Finally, two future directions are as follows:
 
 - The tax code idea could be expanded upon by collecting more relevant data pertaining to individual states, counties, cities, and so forth, thus providing a tool for those interested in the tax law of their respective location.
 
-## 📚 Overview of Key German Tax Laws
+## 🇩🇪 German Tax Law Extension (Granular EStG Focus)
 
-This project references core components of the German federal tax system. Below is a summary of the most relevant laws:
+To explore applicability in German-language legal settings, this project was extended to support **EStG (Einkommensteuergesetz)** using a more **granular, single-law approach** rather than the full tax code set. This focused method allows for detailed experimentation with legal language models in a specific domain (individual income tax).
+
+Only **EStG** was used for this prototype stage — laws like UStG, KStG, AO, or ErbStG were excluded to reduce scope and increase control over data granularity and retrieval quality.
 
 ### 📘 EStG – Einkommensteuergesetz (Income Tax Act)
+
 Regulates the taxation of income for individuals. It defines types of income, deductions, tax brackets, and how income tax is calculated for residents and those with income in Germany.
+
+## 📚 Overview of Key German Tax Laws
+
+This project could be applied to other core components of the German federal tax system. Below is a summary of the most relevant laws which could be used instead of EStG:
 
 ### 📗 UStG – Umsatzsteuergesetz (VAT Act)
 Governs value-added tax (VAT) on goods and services. It sets the rules for when VAT is applicable, who must pay it, and the applicable rates (e.g., 19% standard, 7% reduced).
