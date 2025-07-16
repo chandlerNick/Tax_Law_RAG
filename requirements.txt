@@ -16,3 +16,5 @@ tqdm
 ipykernel
 notebook
 langchain-community
+sentence-transformers
+matplotlib
