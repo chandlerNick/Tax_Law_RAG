@@ -1,6 +1,7 @@
 # TLDR
 1. Built a RAG system & fine tuned BERT using a kubernetes GPU cluster.
 2. See `Term_Project.pdf` for the final presentation.
+3. See subdirectories for README files about the individual branches of this project.
 
 # Project overview
 
