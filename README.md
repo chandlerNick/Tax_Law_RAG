@@ -1,3 +1,7 @@
+# TLDR
+1. Built a RAG system & fine tuned BERT using a kubernetes GPU cluster.
+2. See `Term_Project.pdf` for the final presentation.
+
 # Project overview
 
 In this project, we built RAG systems using BERT and Qwen to answer questions about tax law. We compared two verctor databases (Annoy and FAISS) as well as fine tuned the embedding model, BERT on a document classification task to compare performance to the base BERT. This was a part of a Deep Learning class at the BHT Berlin and required the use of deep learning techniques in the fine tuning process of our model. It also developed skills in Natural Lanugage Processing (NLP) as we had relatively complex text data and worked with two language models. Additionally, it exercised skills in systems thinking (the RAG architecture) and use of GPU compute infrastructure (kubernetes and docker). While the project is "scientific" in nature, it still demonstrates the ability to implement a RAG system for a specific use case, and fine tune BERT. For a detailed overview of the project (and a bit of teaching since it extended the scope of our class) see `Term_Project.pdf`.
