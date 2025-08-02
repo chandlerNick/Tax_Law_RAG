@@ -10,10 +10,11 @@ datasets
 evaluate
 accelerate
 torch
-sentencepiece
+#sentencepiece
 scikit-learn
 tqdm
 ipykernel
 notebook
 langchain-community
-itertools
+sentence-transformers
+matplotlib
